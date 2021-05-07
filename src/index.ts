@@ -8,7 +8,7 @@ interface Options {
     [k: string]: string
   },
   innerHTML?: string
-  children?: VElement[]
+  children?: (VElement|string)[]
 }
 
 interface VElement extends Options {
@@ -16,51 +16,44 @@ interface VElement extends Options {
 }
 
 const createElement = (tagName: string, options: Options): VElement => {
-  return {tagName, attrs: options.attrs, children: options.children}
+  return {tagName, attrs: options.attrs, children: options.children, innerHTML: options.innerHTML}
 }
 const vApp = createElement('div', {
   attrs: {
     id: 'app',
-    name: 'heellll'
+    name: 'heellll',
   },
   innerHTML: 'hi div',
   children: [
     createElement('img', {attrs: {src: 'https://media.giphy.com/media/HhPade8aPmh0u5VKbJ/giphy.gif'}}),
-    {
-      tagName: 'div',
-      attrs: {
-        id: 'children',
-        name: 'child'
-      },
-      innerHTML: 'hi div',
-    }
+    'just string',
+    createElement('div', {attrs: {name: 'another div'}, innerHTML: 'another div'})
   ]
 })
-const render = (vNode: VElement): HTMLElement => {
-  console.log(vNode)
-  // if (typeof vNode === 'string') {
-  //   return document.createTextNode(vNode)
-  // } else {
+const _render = (vNode: VElement): HTMLElement => {
   const $el = document.createElement(vNode.tagName)
-  for (const [k, v] of Object.entries(vNode)) {
-    if (k === 'attrs' && !!v) {
-      Object.keys(v).map(key => $el.setAttribute(key, v[key]))
-    }
-    if (k === 'children' && !!v) {
-      v.map(child => $el.appendChild(render(child)))
-    }
-    if (k === 'innerHTML' && !!v) {
-      $el.innerHTML = v
-    }
+  const {attrs = {}, children = [], innerHTML} = vNode
+  if (innerHTML) {
+    $el.innerHTML = innerHTML
+  }
+  for (const [k, v] of Object.entries(attrs)) {
+    $el.setAttribute(k, v)
+  }
+  for (const child of children) {
+    $el.appendChild(render(child))
   }
   return $el
-  // }
+}
+const render = (vNode: VElement|string): HTMLElement|Text => {
+  if (typeof vNode === 'string') {
+    return document.createTextNode(vNode)
+  }
+  return _render(vNode)
 }
 const $app = render(vApp)
-const mount = (node: HTMLElement, target: HTMLElement) => {
+const mount = (node: HTMLElement|Text, target: HTMLElement) => {
   target.replaceWith(node)
   return node
-  // target.appendChild(node)
 }
 mount($app, document.getElementById('app'))
 console.log($app)
