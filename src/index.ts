@@ -10,9 +10,8 @@ const createVApp = count => createElement('div', {
     dataCount: count
   },
   children: [
+    `count:${count}`,
     createElement('input', {}),
-    createElement('div', {attrs: {name: 'another div'}, innerHTML: `count:${count}`}),
-    createElement('div', {innerHTML: 'doesnt refresh'}),
     ...generateImg(count),
   ]
 })
@@ -32,6 +31,6 @@ setInterval(() => {
   const patch = diff(vApp, vNewApp)
   patch($rootEle)
   vApp = vNewApp
-}, 1000)
+}, 100000)
 
 // console.log($app)

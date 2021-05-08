@@ -1,7 +1,7 @@
 import {render} from './render'
 import {mount} from './mount'
 
-export const diff = (oldVTree: VElement, newVTree?: VElement): DiffFuc => {
+export const diff = (oldVTree: ChildrenType, newVTree?: ChildrenType): DiffFuc => {
   if (!newVTree) {
     return (node) => {
       node.remove()
@@ -23,8 +23,8 @@ export const diff = (oldVTree: VElement, newVTree?: VElement): DiffFuc => {
       }
     }
   }
-  const patchAttrs = diffAttrs(oldVTree.attrs, newVTree.attrs)
-  const patchChildren = diffChildren(oldVTree.children, newVTree.children)
+  const patchAttrs = diffAttrs((oldVTree as VElement).attrs, (newVTree as VElement).attrs)
+  const patchChildren = diffChildren((oldVTree as VElement).children as VElement[], (newVTree as VElement).children as VElement[])
 
   return (node: NodeType) => {
     patchAttrs(node)
@@ -76,7 +76,7 @@ const diffChildren = (oldChildren: VElement[] = [], newChildren: VElement[] = []
   }
   return (parent) => {
     if (patches.length > 0) {
-      for (const [patch,child] of zip(patches, parent.childNodes)){
+      for (const [patch, child] of zip(patches, parent.childNodes)) {
         patch(child)
       }
     }

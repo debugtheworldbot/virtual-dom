@@ -12,7 +12,7 @@ const _render = (vNode: VElement): HTMLElement => {
   }
   return $el
 }
-export const render = (vNode: VElement|string): HTMLElement|Text => {
+export const render = (vNode: ChildrenType): HTMLElement|Text => {
   if (typeof vNode === 'string') {
     return document.createTextNode(vNode)
   }
