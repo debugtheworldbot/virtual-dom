@@ -10,23 +10,27 @@ const createVApp = count => createElement('div', {
     dataCount: count
   },
   children: [
-    createElement('img', {attrs: {src: 'https://media.giphy.com/media/HhPade8aPmh0u5VKbJ/giphy.gif'}}),
-    createElement('input',{}),
-    createElement('div', {attrs: {name: 'another div'}, innerHTML: 'another div'})
+    createElement('input', {}),
+    createElement('div', {attrs: {name: 'another div'}, innerHTML: `count:${count}`}),
+    createElement('div', {innerHTML: 'doesnt refresh'}),
+    ...generateImg(count),
   ]
 })
-let count = 0
-let vApp = createVApp(count)
+
+const generateImg = (count: number) => {
+  return Array.from({length: count}, () =>
+    createElement('img', {attrs: {src: 'https://media.giphy.com/media/HhPade8aPmh0u5VKbJ/giphy.gif'}}),
+  )
+}
+let vApp = createVApp(1)
 const $app = render(vApp)
-let $rootEle = mount($app, document.getElementById('app'))
+const $rootEle = mount($app, document.getElementById('app'))
 
 setInterval(() => {
-  count++
-  const vNewApp = createVApp(count)
-  const patch = diff(vApp,vNewApp)
-
-  $rootEle = patch($rootEle)
-
+  const n = Math.floor(Math.random() * 10) + 1
+  const vNewApp = createVApp(n)
+  const patch = diff(vApp, vNewApp)
+  patch($rootEle)
   vApp = vNewApp
 }, 1000)
 

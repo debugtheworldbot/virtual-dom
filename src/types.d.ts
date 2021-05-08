@@ -10,6 +10,6 @@ interface VElement extends Options {
 
 type NodeType = HTMLElement | Text
 
-type DiffFuc = (node:NodeType)=>NodeType | undefined
+type DiffFuc = (node:NodeType)=> void
 
 type Attrs =  {[k: string]: string}
