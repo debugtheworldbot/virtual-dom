@@ -9,7 +9,6 @@ const createVApp = count => createElement('div', {
     name: 'father',
     dataCount: count
   },
-  innerHTML: 'hi there',
   children: [
     createElement('img', {attrs: {src: 'https://media.giphy.com/media/HhPade8aPmh0u5VKbJ/giphy.gif'}}),
     createElement('input',{}),

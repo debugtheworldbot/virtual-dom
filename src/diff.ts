@@ -37,15 +37,50 @@ export const diff = (oldVTree: VElement, newVTree?: VElement): DiffFuc => {
   }
 }
 
-const diffAttrs = (oldAttrs: Attrs, newAttrs: Attrs): DiffFuc => {
+const diffAttrs = (oldAttrs: Attrs ={}, newAttrs: Attrs={}): DiffFuc => {
+  const patches = []
+  // add attrs
+  for (const [k, v] of Object.entries(newAttrs)) {
+    patches.push((node: HTMLElement) => {
+      node.setAttribute(k, v)
+      return node
+    })
+  }
+  // remove old attrs
+  for (const [k] of Object.entries(oldAttrs)) {
+    if (!(k in newAttrs)) {
+      patches.push((node: HTMLElement) => {
+        node.removeAttribute(k)
+      })
+    }
+  }
   return (node) => {
-
+    for (const patch of patches) {
+      patch(node)
+    }
     return node
   }
 }
-const diffChildren = (oldAttrs: VElement[], newAttrs: VElement[]): DiffFuc => {
-  return (node) => {
+const diffChildren = (oldChildren: VElement[] = [], newChildren: VElement[] = []): DiffFuc => {
+  const patches = []
+  oldChildren.forEach((oldChild, i) => {
+    patches.push(diff(oldChild, newChildren[i]))
+  })
 
-    return node
+  const additionalPatches = []
+  for (const additionalChild of newChildren.slice(oldChildren.length)) {
+    additionalPatches.push((node: HTMLElement) => {
+      node.appendChild(render(additionalChild))
+    })
+  }
+  return (parent) => {
+    patches.length>0 && parent.childNodes.forEach((child,i)=>{
+      patches[i](child)
+    })
+    for (const patch of additionalPatches) {
+      patch(parent)
+    }
+
+    return parent
   }
 }
