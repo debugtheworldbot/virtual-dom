@@ -1,8 +1,3 @@
-interface VNode {
-  tagName: string
-  options: Options
-}
-
 interface Options {
   attrs?: {
     [k: string]: string
@@ -21,9 +16,9 @@ const createElement = (tagName: string, options: Options): VElement => {
 const vApp = createElement('div', {
   attrs: {
     id: 'app',
-    name: 'heellll',
+    name: 'hello',
   },
-  innerHTML: 'hi div',
+  innerHTML: 'hi there 11',
   children: [
     createElement('img', {attrs: {src: 'https://media.giphy.com/media/HhPade8aPmh0u5VKbJ/giphy.gif'}}),
     'just string',
