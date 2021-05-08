@@ -1,7 +1,6 @@
 ## homemade virtualDOM
 
-![img.png](img.png)
-![img_1.png](img_1.png)
+![gif](gif.gif)
 
 ### try it yourself
 ```
