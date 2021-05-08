@@ -1,20 +1,34 @@
 import {render} from './render'
 import {createElement} from './createElement'
 import {mount} from './mount'
+import {diff} from './diff'
 
-const vApp = createElement('div', {
+const createVApp = count => createElement('div', {
   attrs: {
     id: 'app',
-    name: 'hello',
+    name: 'father',
+    dataCount: count
   },
-  innerHTML: 'hi there 11',
+  innerHTML: 'hi there',
   children: [
     createElement('img', {attrs: {src: 'https://media.giphy.com/media/HhPade8aPmh0u5VKbJ/giphy.gif'}}),
-    'just string',
+    createElement('input',{}),
     createElement('div', {attrs: {name: 'another div'}, innerHTML: 'another div'})
   ]
 })
-
+let count = 0
+let vApp = createVApp(count)
 const $app = render(vApp)
-mount($app, document.getElementById('app'))
-console.log($app)
+let $rootEle = mount($app, document.getElementById('app'))
+
+setInterval(() => {
+  count++
+  const vNewApp = createVApp(count)
+  const patch = diff(vApp,vNewApp)
+
+  $rootEle = patch($rootEle)
+
+  vApp = vNewApp
+}, 1000)
+
+// console.log($app)

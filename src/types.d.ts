@@ -1,11 +1,15 @@
 interface Options {
-  attrs?: {
-    [k: string]: string
-  },
+  attrs?: Attrs,
   innerHTML?: string
-  children?: (VElement|string)[]
+  children?: VElement[]
 }
 
 interface VElement extends Options {
   tagName: string
 }
+
+type NodeType = HTMLElement | Text
+
+type DiffFuc = (node:NodeType)=>NodeType | undefined
+
+type Attrs =  {[k: string]: string}
