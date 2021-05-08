@@ -10,17 +10,12 @@ export const diff = (oldVTree: ChildrenType, newVTree?: ChildrenType): DiffFuc =
   if (typeof oldVTree === 'string' || typeof newVTree === 'string') {
     if (oldVTree !== newVTree) {
       return (node) => {
-        const newNode = render(newVTree)
-        mount(newNode, node)
-        return newNode
+        mount(render(newVTree), node)
       }
     }
-  } else {
-    if (oldVTree.tagName !== newVTree.tagName) {
-      return (node: NodeType) => {
-        const newNode = render(newVTree)
-        mount(newNode, node)
-      }
+  } else if (oldVTree.tagName !== newVTree.tagName) {
+    return (node: NodeType) => {
+      mount(render(newVTree), node)
     }
   }
   const patchAttrs = diffAttrs((oldVTree as VElement).attrs, (newVTree as VElement).attrs)
@@ -83,7 +78,6 @@ const diffChildren = (oldChildren: VElement[] = [], newChildren: VElement[] = []
     for (const patch of additionalPatches) {
       patch(parent)
     }
-
     return parent
   }
 }

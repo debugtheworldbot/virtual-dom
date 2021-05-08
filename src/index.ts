@@ -10,9 +10,10 @@ const createVApp = count => createElement('div', {
     dataCount: count
   },
   children: [
-    `count:${count}`,
+    createElement('div', {children: [`count:${count}`]}),
     createElement('input', {}),
-    ...generateImg(count),
+    createElement('div', {children: generateImg(count)}),
+    'end'
   ]
 })
 
