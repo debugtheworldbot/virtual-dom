@@ -16,7 +16,7 @@ export const diff = (oldVTree: ChildrenType, newVTree?: ChildrenType): DiffFuc =
       }
     }
   } else {
-    if (oldVTree.tagName !== newVTree.tagName || oldVTree.innerHTML !== newVTree.innerHTML) {
+    if (oldVTree.tagName !== newVTree.tagName) {
       return (node: NodeType) => {
         const newNode = render(newVTree)
         mount(newNode, node)

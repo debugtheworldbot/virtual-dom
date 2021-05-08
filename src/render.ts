@@ -1,9 +1,7 @@
 const _render = (vNode: VElement): HTMLElement => {
   const $el = document.createElement(vNode.tagName)
-  const {attrs = {}, children = [], innerHTML} = vNode
-  if (innerHTML) {
-    $el.innerHTML = innerHTML
-  }
+  const {attrs = {}, children = []} = vNode
+
   for (const [k, v] of Object.entries(attrs)) {
     $el.setAttribute(k, v)
   }

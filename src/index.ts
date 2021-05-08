@@ -31,6 +31,6 @@ setInterval(() => {
   const patch = diff(vApp, vNewApp)
   patch($rootEle)
   vApp = vNewApp
-}, 100000)
+}, 1000)
 
 // console.log($app)

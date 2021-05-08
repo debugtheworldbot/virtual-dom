@@ -1,6 +1,5 @@
 interface Options {
   attrs?: Attrs,
-  innerHTML?: string
   children?:ChildrenType[]
 }
 
